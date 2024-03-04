@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/style-device.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <title>parking-system</title>
+</head>
+<body>
+    <div class="menu">
+        <ul>
+            <li >
+                <a class="profile"href="">
+                <div class="img-box">
+                    <img src="profile.jpg" alt="img">
+                </div>
+                
+                <h2> mohammed</h2>
+            
+            </a>
+            </li>
+            <li>
+                <a class="dash" href="parking.html">
+                <i class=" fas fa-home"></i>
+                <p>Dash board</p>
+            </a>
+            </li>
+            <li>
+                <a href="counting.html">
+                <i class=" fas fa-dollar"></i>
+                <p>Counting</p>
+            </a>
+            </li>
+            <li>
+            <li>
+                <a href="subsciptions.html">
+                <i class=" fas fa-user-group"></i>
+                <p>Subscriptions</p>
+            </a>
+            </li>
+            <li>
+                <a href="#">
+                <i class=" fas fa-computer"></i>
+                <p>Devices</p>
+            </a>
+            </li>
+            <li>
+                <a href="printers.html">
+                <i class=" fas fa-table"></i>
+                <p>Printers</p>
+            </a>
+            </li>
+            <li>
+                <a href="reports.html">
+                <i class=" fas fa-chart-bar"></i>
+                <p>Reports</p>
+            </a>
+            </li>
+            <li>
+                <a href="settings.html">
+                <i class=" fas fa-cog"></i>
+                <p>Settings</p>
+            </a>
+            </li>
+            <li class="sign-out">
+                <a href="">
+                <i class=" fas fa-sign-out"></i>
+                <p>Sign out</p>
+            </a>
+            </li>
+
+
+
+        </ul>
+
+
+
+    </div>
+    <div class="content">
+         <div class="titel">
+            <p>Wolves Parking System</p>
+
+            <i class=" fas fa-chart-bar"></i>
+        </div>
+        <div class="search_area">
+            <form method="GET" >
+
+            <label>Ip Address</label>
+            <input  name="ip_address" id="ip_address" >
+             <label> Device Name</label>
+            <input  name="device_name" id="device_name" >
+            <button class="code-button" type="submit" >Add</button>
+            </form>
+
+        </div>
+        <div class="titel">
+            <p>devices</p>
+            
+            <i class=" fas fa-computer"></i>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="checkall"></th>
+
+                    <th>ip</th>
+                    <th>Serial number</th>
+                    <th>device name </th>
+
+                    <th>action</th>
+                    
+                   
+                </tr>
+            </thead>
+            <tbody>
+            {% for device in all_devices %}
+                <tr>
+                    <td><input type="checkbox" name="checkthis" id=""></td>
+
+                    <td><span class="ip">{{device.IP}}</span></td>
+                    <td> <p class="mack address">{{device.serial}}</p></td>
+                    <td><span class="device_name">{{device.Device_name}}</span></td>
+
+                    <td class="links"> <a class="edit_button" href="{% url 'devices:edit_ip' device.id %}">Edit </a><a class="delete_button" href="{% url 'devices:destroy' device.id %}"> Delete</a>
+                    
+                </tr>
+            {% endfor %}
+
+            </tbody>
+
+      </form>
+        </table>
+    </div>    
+</body>
+</html>

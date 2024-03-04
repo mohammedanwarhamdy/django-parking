@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/style_edit.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <title>parking-system</title>
+</head>
+<body>
+    
+    <div class="menu">
+        <ul>
+            <li >
+                <a class="profile"href="">
+                <div class="img-box">
+                    <img src="profile.jpg" alt="img">
+                </div>
+                
+                <h2> mohammed</h2>
+            
+            </a>
+            </li>
+            <li>
+                <a class="dash" href="">
+                <i class=" fas fa-home"></i>
+                <p>Dash board</p>
+            </a>
+            </li>
+            <li>
+                <a href="counting.html">
+                <i class=" fas fa-dollar"></i>
+                <p>Counting</p>
+            </a>
+            </li>
+            <li>
+            <li>
+                <a href="subsciptions.html">
+                <i class=" fas fa-user-group"></i>
+                <p>Subscriptions</p>
+            </a>
+            </li>
+            <li>
+                <a href="">
+                <i class=" fas fa-computer"></i>
+                <p>Devices</p>
+            </a>
+            </li>
+            <li>
+                <a href="">
+                <i class=" fas fa-table"></i>
+                <p>Printers</p>
+            </a>
+            </li>
+            <li>
+                <a href="">
+                <i class=" fas fa-chart-bar"></i>
+                <p>Reports</p>
+            </a>
+            </li>
+            <li>
+                <a href="">
+                <i class=" fas fa-cog"></i>
+                <p>Settings</p>
+            </a>
+            </li>
+            <li class="sign-out">
+                <a href="">
+                <i class=" fas fa-sign-out"></i>
+                <p>Sign out</p>
+            </a>
+            </li>
+
+
+
+        </ul>
+
+
+
+    </div>
+    <div class="content">
+        <div class="titel">
+            <p>Edite Ip Address</p>
+            <i class=" fas fa-chart-bar"></i>
+        </div>
+        <div class="contianer">
+            <div class="ipaddress">
+            <form method="GET" action="">
+            {% csrf_token %}
+                <div class="ip_input">
+                    <label>new ip</label>
+                    {{ form.IP }}
+                </div>
+                <div class="sub_input">
+                    <label >Sub net</label>
+                    {{ form.su_net }}
+
+                </div>
+                <div class="gate">
+                    <label >Gate way</label>
+                    {{ form.gate_way }}
+
+                </div>
+                <div class="gate">
+                    <label >Device Name</label>
+                    {{ form.Device_name }}
+
+                </div>
+                <div class="form_button">
+                    <button type="submit" class="code-button" >edit</button>
+                </div>
+
+
+
+
+            </form>
+        </div>
+
+
+
+
+
+
+
+
+
+        
+    </div>
+
+    </body>
+    </html>        
