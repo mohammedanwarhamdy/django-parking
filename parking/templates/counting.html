@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/style-counting.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <title>parking-system</title>
+</head>
+<body>
+    <div class="menu">
+        <ul>
+            <li >
+                <a class="profile"href="">
+                <div class="img-box">
+                    <img src="\static\css\profile.jpg" alt="img">
+                </div>
+                
+                <h2> {{user}}</h2>
+            
+            </a>
+            </li>
+            <li>
+                <a class="dash" href="{% url 'parking:parking' %}">
+                <i class=" fas fa-home"></i>
+                <p>Dash Board</p>
+            </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:counting' %}">
+                <i class=" fas fa-dollar"></i>
+                <p>Counting</p>
+            </a>
+            </li>
+            <li>
+            <li>
+                <a href="{% url 'parking:subscriber' %}">
+                <i class=" fas fa-user-group"></i>
+                <p>Subscriptions</p>
+            </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:devices' %}">
+                <i class=" fas fa-computer"></i>
+                <p>Devices</p>
+            </a>
+            </li>
+            <li>
+                <a href="printers.html">
+                <i class=" fas fa-table"></i>
+                <p>Printers</p>
+            </a>
+            </li>
+            <li>
+                <a href="">
+                <i class=" fas fa-chart-bar"></i>
+                <p>Reports</p>
+            </a>
+            </li>
+            <li>
+                <a href="">
+                <i class=" fas fa-cog"></i>
+                <p>Settings</p>
+            </a>
+            </li>
+            <li class="sign-out">
+                <a href="{% url 'logout' %}">
+                <i class=" fas fa-sign-out"></i>
+                <p>Sign out</p>
+            </a>
+            </li>
+
+
+
+        </ul>
+
+
+
+    </div>
+    <div class="content">
+        <div class="titel">
+            {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+            <p>Wolves Parking System</p>
+
+            <i class=" fas fa-chart-bar"></i>
+        </div>
+        
+        <div class="counting-area">
+            <div class="barcode-input">
+                 <form method="GET" >
+                <label>Code</label>
+                <input name="code" id="code">
+                <button class="code-button" type="submit">ok</button>
+            </div>
+            <div class="text-area">
+                <textarea name="" id="" cols="50" rows="8">
+
+                Wolves Parking Systems
+                Entry Time: {{Entrytime}}
+                Exit Time: {{Exitetime}}
+                Total Time : {{Total_time}}
+                Cost : {{Cost}}
+                User : {{user}}</textarea>
+                <button class="code-button" type="submit">print</button>
+                </form>
+            </div>
+
+
+
+        </div>
+        <div class="titel">
+            <p>Last Counting</p>
+            <p>total=2000 </p>
+            <i class=" fas fa-dollar"></i>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>user</th>
+                    <th>id</th>
+                    <th>entry point</th>
+                    <th>entry time </th>
+                    <th>exite time</th>
+                    <th>total time</th>
+                    <th>cost</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+            {% for Counting in counting %}
+                <tr>
+                    <td> <p class="user">{{Counting.User}}</p></td>
+                    <td><span class="id">{{Counting.code}}</span></td>
+                    <td> <p class="entry-point">{{Counting.entry_point}}</p></td>
+                    <td><span class="entry-time">{{Counting.entry_time}}</span></td>
+                    <td><span class="exite-time"> {{Counting.exite_time}}</span></td>
+                    <td><span class="total-time"> {{Counting.total_time}}</span></td>
+                    <td><span class="cost"> {{Counting.cost}}</span></td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+    </div>
+
+
+</div>
+
+    
+</body>
+</html>       

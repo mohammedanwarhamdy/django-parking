@@ -9,8 +9,8 @@ body{
     display: flex;
 }
 .menu{
+background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
 width: 80px;
-background-color:#123;
 height: 100vh;
 
 overflow: hidden;
@@ -149,10 +149,13 @@ ul li a:hover,.dash{
 }
 table{
     width: 100%;
+
     text-align: center;
     border-spacing: 8px;
+
 }
 td,th{
+
     background-color: #123;
     height: 40px;
     border-radius: 5px;

@@ -10,6 +10,7 @@
     <title>parking-system</title>
 </head>
 <body>
+
     <div class="menu">
         <ul>
             <li >
@@ -18,31 +19,31 @@
                     <img src="profile.jpg" alt="img">
                 </div>
                 
-                <h2> mohammed</h2>
+                <h2>{{user}}</h2>
             
             </a>
             </li>
             <li>
-                <a class="dash" href="parking.html">
+                <a class="dash" href="{% url 'parking:parking' %}">
                 <i class=" fas fa-home"></i>
                 <p>Dash board</p>
             </a>
             </li>
             <li>
-                <a href="counting.html">
+                <a href="{% url 'parking:counting' %}">
                 <i class=" fas fa-dollar"></i>
                 <p>Counting</p>
             </a>
             </li>
             <li>
             <li>
-                <a href="subsciptions.html">
+                <a href="{% url 'parking:subscriber' %}">
                 <i class=" fas fa-user-group"></i>
                 <p>Subscriptions</p>
             </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{% url 'parking:devices' %}">
                 <i class=" fas fa-computer"></i>
                 <p>Devices</p>
             </a>
@@ -66,7 +67,7 @@
             </a>
             </li>
             <li class="sign-out">
-                <a href="">
+                <a href="{% url 'logout' %}">
                 <i class=" fas fa-sign-out"></i>
                 <p>Sign out</p>
             </a>
@@ -101,6 +102,7 @@
             
             <i class=" fas fa-computer"></i>
         </div>
+
         <table>
             <thead>
                 <tr>
@@ -124,7 +126,7 @@
                     <td> <p class="mack address">{{device.serial}}</p></td>
                     <td><span class="device_name">{{device.Device_name}}</span></td>
 
-                    <td class="links"> <a class="edit_button" href="{% url 'devices:edit_ip' device.id %}">Edit </a><a class="delete_button" href="{% url 'devices:destroy' device.id %}"> Delete</a>
+                    <td class="links"> <a class="edit_button" href="{% url 'parking:edit_ip' device.id %}">Edit </a><a class="delete_button" href="{% url 'parking:destroy' device.id %}"> Delete</a>
                     
                 </tr>
             {% endfor %}
@@ -133,6 +135,14 @@
 
       </form>
         </table>
-    </div>    
+        {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+    </div>
+
 </body>
 </html>

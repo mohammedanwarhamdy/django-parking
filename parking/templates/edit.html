@@ -18,7 +18,7 @@
                     <img src="profile.jpg" alt="img">
                 </div>
                 
-                <h2> mohammed</h2>
+                <h2>{{user}}</h2>
             
             </a>
             </li>
@@ -29,20 +29,20 @@
             </a>
             </li>
             <li>
-                <a href="counting.html">
+                <a href="{% url 'parking:counting' %}">
                 <i class=" fas fa-dollar"></i>
                 <p>Counting</p>
             </a>
             </li>
             <li>
             <li>
-                <a href="subsciptions.html">
+                <a href="{% url 'parking:subscriber' %}">
                 <i class=" fas fa-user-group"></i>
                 <p>Subscriptions</p>
             </a>
             </li>
             <li>
-                <a href="">
+                <a href="{% url 'parking:devices' %}">
                 <i class=" fas fa-computer"></i>
                 <p>Devices</p>
             </a>
@@ -66,7 +66,7 @@
             </a>
             </li>
             <li class="sign-out">
-                <a href="">
+                <a href="{% url 'logout' %}">
                 <i class=" fas fa-sign-out"></i>
                 <p>Sign out</p>
             </a>

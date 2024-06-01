@@ -10,7 +10,7 @@ body{
 }
 .menu{
 width: 80px;
-background-color:#123;
+background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
 height: 100vh;
 
 overflow: hidden;

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/style-parking.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta http-equiv="refresh" content="5">
+    <title>parking-system</title>
+</head>
+<body>
+    
+    <div class="menu">
+        <ul>
+            <li >
+                <a class="profile"href="">
+                <div class="img-box">
+                    <img src="profile.jpg" alt="img">
+                </div>
+                
+                <h2>  {{user}}</h2>
+            
+            </a>
+            </li>
+            <li>
+                <a class="dash" href="{% url 'parking:parking' %}">
+                <i class=" fas fa-home"></i>
+                <p>Dash board</p>
+            </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:counting' %}">
+                <i class=" fas fa-dollar"></i>
+                <p>Counting</p>
+            </a>
+            </li>
+            <li>
+            <li>
+                <a href="{% url 'parking:subscriber' %}">
+                <i class=" fas fa-user-group"></i>
+                <p>Subscriptions</p>
+            </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:devices' %}">
+                <i class=" fas fa-computer"></i>
+                <p>Devices</p>
+            </a>
+            </li>
+            <li>
+                <a href="">
+                <i class=" fas fa-table"></i>
+                <p>Printers</p>
+            </a>
+            </li>
+            <li>
+                <a href="">
+                <i class=" fas fa-chart-bar"></i>
+                <p>Reports</p>
+            </a>
+            </li>
+            <li>
+                <a href="">
+                <i class=" fas fa-cog"></i>
+                <p>Settings</p>
+            </a>
+            </li>
+            <li class="sign-out">
+                <a href="{% url 'logout' %}">
+                <i class=" fas fa-sign-out"></i>
+                <p>Sign out</p>
+            </a>
+            </li>
+
+
+
+        </ul>
+
+
+
+    </div>
+    <div class="content">
+        <div class="titel">
+            <p>Wolves Parking System</p>
+            <i class=" fas fa-chart-bar"></i>
+        </div>
+        <div class="boxes">
+            <div class="box">
+                <i class="fas fa-chart-bar"></i>
+                <i class="fas fa-"></i>
+                <div>
+                    <p> parking slots</p>
+                    <span>60</span>
+                </div>
+            </div>
+             <div class="box">
+                <i class="fas fa-chart-bar"></i>
+                <i class="fas fa-"></i>
+                <div>
+                    <p>avilable </p>
+                    <span>6</span>
+                </div>
+            </div>
+             <div class="box">
+                <i class="fas fa-dollar"></i>
+                <div>
+                    <p>earnings</p>
+                    <span>600</span>
+                </div>
+            </div> <div class="box">
+                <i class="fas fa-car"></i>
+                <div>
+                    <p>cars inside </p>
+                    <span>60</span>
+                </div>
+            </div>
+            <div class="box">
+                <i class="fas fa-dollar"></i>
+                <div>
+                    <p>pending payments</p>
+                    <span>280</span>
+                </div>
+                
+            </div>
+
+
+        </div>
+        <div class="titel">
+            <p> Devices</p>
+            <i class=" fa fa-desktop"></i>
+        </div>
+        <div class="devices">
+            <div class=" on-line">
+            <i class="fa fa-desktop"></i>
+            <p>192.168.1.100</p>
+        </div>
+        
+        <div class="off-line">
+            <i class="fa fa-desktop"></i>
+            <p>192.168.1.100</p>
+        </div>
+        <div class="off-line">
+            <i class="fa fa-desktop"></i>
+            <p>192.168.1.100</p>
+        </div>
+        <div class="off-line">
+            <i class="fa fa-desktop"></i>
+            <p>192.160.1.100</p>
+        </div>
+        </div>
+        <div class="titel">
+            <p>Tickets</p>
+            <i class=" fa fa-exchange"></i>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>
+
+                    <th>event point</th>
+                    <th>event time </th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+            {% for tranaction in all_transactions %}
+                <tr>
+                    <td><span class="id">{{tranaction.code}}</span></td>
+
+                    <td> <p class="event-point">{{tranaction.entry_point}}</p></td>
+                    <td><span class="event-time">{{tranaction.entry_time}}</span></td>
+                    
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+    
+</body>
+</html>

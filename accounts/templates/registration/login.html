@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<title>parkin system</title>
+	<link rel="stylesheet" type="text/css" href="slide navbar style.css">
+<link href="{% static 'css/style_login.css' %}" rel="stylesheet">
+</head>
+<body>
+	<div class="main">
+		<input type="checkbox" id="chk" aria-hidden="true">
+
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+			<div class="login">
+				<form method="post" action="{% url 'login' %}">
+					{% csrf_token %}
+					<label for="chk" aria-hidden="true">Login</label>
+					<label class="test" aria-hidden="true">User name</label>
+					{{ form.username }}
+					<label class="test" aria-hidden="true">Pass Word</label>
+					{{ form.password }}
+					<input class="button" type="submit" value="login">
+<input type="hidden" name="next" value="{{ next }}">
+					<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+				</form>
+			</div>
+
+	</div>
+</body>
+</html>

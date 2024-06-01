@@ -10,7 +10,7 @@ body{
 }
 .menu{
 width: 80px;
-background-color:#123;
+background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
 height: 100vh;
 
 overflow: hidden;
@@ -81,7 +81,11 @@ ul li a:hover,.dash{
 .content{
     width: 100%;
     align-items: center;
+
     
+}
+.content input{
+color:black;
 }
 
 .titel{
@@ -95,49 +99,35 @@ ul li a:hover,.dash{
 
 }
 .add-subscriber{
+    margin: 10px;
+   flex-basis: 100%;
     display: flex;
     justify-content: space-between;
-    flex-basis: 80%;
-    flex-grow: 1;
-    margin: 10px;
-    gap: 30px;
-    flex-wrap: wrap;
     align-items: center;
-    background-color: #123;
-    border-radius: 8px;
-    margin: 10px;
-    padding: 10px;
-}
-.left-box{
-    flex-basis: 25%;
-    height: 200px;
     flex-wrap: wrap;
-    
-}
-.midel-box{
-    flex-basis: 30%;
-    height: 200px;
-    flex-wrap: wrap;
-    align-items: center;
-    
-}
-.right-box{
-    flex-basis: 25%;
-    height: 200px;
-    flex-wrap: wrap;
-    
-    
+    gap: 10px;
+    }
+.add-subscriber input{
+    color: black;
 
 }
-.Name,.from,.number-of-hours,.card-id,.to,.cost{
-    display: flex;
-    gap: 10px;
-    margin:15px;
-    
+.valid_from input{
+    color: black;
 }
-.Name input,.from input,.number-of-hours input,.card-id input,.to input,.cost input,.right-box{
-    width: 100%;
-    -webkit-text-fill-color: #001;
+.card_id input{
+    color: black;
+}
+.form input{
+    color= #001;
+}
+.form input {
+            color: black ;
+            }
+.add-subscriber textarea{
+    color:black;
+}
+.packge select {
+color:black;
 }
 .code-button{
     width: 70px;
@@ -173,3 +163,23 @@ th {
 td:hover{
     background-color:#66666655 ;
 }
+.edit_button{
+    width:70px;
+    height: 30px;
+    background-color: green;
+    text-decoration: none;
+    align-items: center;
+    border-radius: 8px;
+}
+.links{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+.delete_button{
+    width: 70px;
+    background-color: red;
+    text-decoration: none;
+    height: 30px;
+    }
