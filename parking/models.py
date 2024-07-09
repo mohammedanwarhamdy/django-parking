@@ -12,12 +12,14 @@ class devices(models.Model):
     def __str__(self):
         return self.IP
 class subscriber(models.Model):
+    User = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="user", null=True, blank=True)
     subscriberid = models.IntegerField(verbose_name='Subscriber Id')
     name=models.CharField(max_length=70,verbose_name="Name",blank=True,null=True)
     card=models.IntegerField(verbose_name='Card Number')
     valid_from=models.DateTimeField(verbose_name="Valid From",blank=True,null=True)
     valid_to=models.DateTimeField(verbose_name="Valid TO",blank=True,null=True)
     packege = models.ForeignKey("packeges", on_delete=models.CASCADE, verbose_name="Packege",null=True,blank=True)
+    creatrd_at=models.DateTimeField(verbose_name="Createdat",blank=True,null=True)
     def __str__(self):
         return self.name
 class packeges(models.Model):
@@ -33,7 +35,7 @@ class transactions(models.Model):
     code=models.IntegerField(verbose_name="Code",blank=True,null=True)
     entry_point=models.CharField(max_length=90,verbose_name="Entry Point",blank=True,null=True)
     entry_time=models.DateTimeField(verbose_name="Entry Time",blank=True,null=True)
-
+    creatrd_at = models.DateTimeField(verbose_name="Createdat", blank=True, null=True)
 
     def __str__(self):
         return str(self.code)
@@ -46,5 +48,19 @@ class counting(models.Model):
     code = models.IntegerField(verbose_name="Code", blank=True, null=True)
     entry_point = models.CharField(max_length=90, verbose_name="Entry Point", blank=True, null=True)
     entry_time = models.DateTimeField(verbose_name="Entry Time", blank=True, null=True)
+    creatrd_at = models.DateTimeField(verbose_name="Createdat", blank=True, null=True)
     def __str__(self):
         return str(self.User)
+class counting_settings(models.Model):
+    period_of_allowing=models.FloatField(verbose_name="period of allowing",default=10)
+    first_period_duration=models.FloatField(verbose_name="first period duration",blank=True,null=True)
+    second_period_duration=models.FloatField(verbose_name="second period duration",blank=True,null=True)
+
+    first_period_duration_cost=models.FloatField(verbose_name="first period duration cost",blank=True,null=True)
+    second_period_duration_cost = models.FloatField(verbose_name="second period duration cost", blank=True, null=True)
+    rest_period_duration_cost_perhoure= models.FloatField(verbose_name="rest period duration cost", blank=True, null=True)
+    enable_night_mode=models.BooleanField(verbose_name="Enable night mode",blank=True,null=True)
+    n_starttime=models.TimeField(verbose_name="night mode start time",blank=True,null=True)
+    n_endtime = models.TimeField(verbose_name="night mode end time",blank=True,null=True)
+    night_modeCost=models.FloatField(verbose_name="night mode cost",blank=True,null=True)
+    min_period_tocost=models.FloatField(verbose_name="minimum period to cost night mode",blank=True,null=True)

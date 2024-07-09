@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/style-settings.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   
+    <title>parking-system</title>
+</head>
+<body>
+    <div class="menu">
+        <ul>
+            <li >
+                <a class="profile"href="">
+                <div class="img-box">
+                    <img src="profile.jpg" alt="img">
+                </div>
+                
+                <h2> {{user}}</h2>
+            
+            </a>
+            </li>
+            <li>
+                <a class="dash" href="{% url 'parking:parking' %}">
+                <i class=" fas fa-home"></i>
+                <p>Dash board</p>
+            </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:counting' %}">
+                <i class=" fas fa-dollar"></i>
+                <p>Counting</p>
+            </a>
+            </li>
+            <li>
+            <li>
+                <a href="{% url 'parking:subscriber' %}">
+                <i class=" fas fa-user-group"></i>
+                <p>Subscriptions</p>
+            </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:devices' %}">
+                <i class=" fas fa-computer"></i>
+                <p>Devices</p>
+            </a>
+            </li>
+            <li>
+                <a href="printers.html">
+                <i class=" fas fa-table"></i>
+                <p>Printers</p>
+            </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:reports' %}">
+                <i class=" fas fa-chart-bar"></i>
+                <p>Reports</p>
+            </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:settings' %}">
+                <i class=" fas fa-cog"></i>
+                <p>Settings</p>
+            </a>
+            </li>
+            <li class="sign-out">
+                <a href="">
+                <i class=" fas fa-sign-out"></i>
+                <p>Sign out</p>
+            </a>
+            </li>
+
+
+
+        </ul>
+
+
+
+    </div>
+    <div class="content">
+        <div class="titel">
+            <p>Counting Settings </p>
+            <i class=" fas fa-cog"></i>
+        </div>
+        <div class="counting_settings_form">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="period_duration">
+
+                    
+                        <label for="id_first_period_duration">First Period Duration</label>
+                {{ form.first_period_duration }}
+                     
+                
+                
+                    <label for="id_second_period_duration">Second Period Duration</label>
+                {{ form.second_period_duration }}
+                
+                
+
+                </div>
+                <div class="period_cost">
+                   <label for="id_first_period_duration_cost">First Period Cost</label>
+                {{ form.first_period_duration_cost }}
+
+                <label for="id_second_period_duration_cost">Second Period Cost</label>
+                {{ form.second_period_duration_cost }}
+
+                <label for="id_rest_period_duration_cost">Rest Period Cost</label>
+                {{ form.rest_period_duration_cost_perhoure }}
+                </div>
+                <div class="period_of_allowing">
+                     <label for="id_period-of_allowing">Period of allowing</label>
+                        {{ form.period_of_allowing }}
+                </div>
+                <div class="">
+
+                </div>
+
+
+
+
+
+        </div>
+        <div class="titel">
+            <p>night mode Settings </p>
+            <i class=" fas fa-cog"></i>
+        </div>
+        <div class="night_mode">
+             <label>
+                {{ form.enable_night_mode }}  Activate Night Mode
+            </label>
+            <div id="additionalFields" class="{% if not form.enable_night_mode.value %}hidden{% endif %}">
+                <label for="id_n_starttime">Start Time:</label>
+                {{ form.n_starttime }}<br><br>
+
+                <label for="id_n_endtime">End Time:</label>
+                {{ form.n_endtime }}<br><br>
+
+               <label for="id_night_mode_cost">Night Mode Cost:</label>
+                {{ form.night_modeCost }}
+
+                <label for="id_min_period_tocost">Minimum Period to Activate Night Mode :</label>
+                {{ form.min_period_tocost }}
+            </div>
+  <div class="">
+      <button class="code-button" type="submit"> Save</button>
+  </form>
+  </div>
+
+</div>
+<label>Note: all periodes in minutes</label>
+            <div class="titel">
+            <p>Useres </p>
+            <i class="  fa-user-group"></i>
+
+        </div>
+        <div class="add_user">
+            <a href="{% url 'parking:signup' %}">
+
+                <p>add user</p>
+            <a/>
+        <div/>
+<script>
+    document.getElementById('id_enable_night_mode').addEventListener('change', function() {
+        var additionalFields = document.getElementById('additionalFields');
+        additionalFields.classList.toggle('hidden', !this.checked);
+
+        // Reset fields if checkbox is unchecked
+        if (!this.checked) {
+            document.getElementById('id_n_starttime').value = '';
+            document.getElementById('id_n_endtime').value = '';
+            document.getElementById('id_night_mode_cost').value = '';
+            document.getElementById('id_min_period_tocost').value = '';
+        }
+    });
+</script>
+
+        </div>
+
+    </div>    
+</body>
+</html>

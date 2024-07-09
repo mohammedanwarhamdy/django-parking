@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/style-reports.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <title>parking-system</title>
+</head>
+<body>
+    <div class="menu">
+        <ul>
+            <li >
+                <a class="profile"href="">
+                <div class="img-box">
+                    <img src="profile.jpg" alt="img">
+                </div>
+                
+                <h2> {{user}}</h2>
+            
+            </a>
+            </li>
+            <li>
+                <a class="dash" href="{% url 'parking:parking' %}">
+                <i class=" fas fa-home"></i>
+                <p>Dash board</p>
+            </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:counting' %}">
+                <i class=" fas fa-dollar"></i>
+                <p>Counting</p>
+            </a>
+            </li>
+            <li>
+            <li>
+                <a href="{% url 'parking:subscriber' %}">
+                <i class=" fas fa-user-group"></i>
+                <p>Subscriptions</p>
+            </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:devices' %}">
+                <i class=" fas fa-computer"></i>
+                <p>Devices</p>
+            </a>
+            </li>
+            <li>
+                <a href="printers.html">
+                <i class=" fas fa-table"></i>
+                <p>Printers</p>
+            </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:reports' %}">
+                <i class=" fas fa-chart-bar"></i>
+                <p>Reports</p>
+            </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:settings' %}">
+                <i class=" fas fa-cog"></i>
+                <p>Settings</p>
+            </a>
+            </li>
+            <li class="sign-out">
+                <a href="{% url 'logout' %}">
+                <i class=" fas fa-sign-out"></i>
+                <p>Sign out</p>
+            </a>
+            </li>
+
+
+
+        </ul>
+
+
+
+    </div>
+    <div class="content">
+        <div class="titel">
+            <p>tickets report</p>
+            <i class=" fas fa-chart-bar"></i>
+        </div>
+        <form>
+            <div class="reportform">
+
+                <div>
+                    <div class="one">
+                        <label>From</label>
+                        {{form.start_date}}
+
+
+                        <label>To </label>
+                        {{form.end_date}}
+                        <label for="User" user>
+
+
+
+                        </label>
+
+                           {{form.user}}
+
+                    </div>
+                </div>
+
+                <button class="code-button"> Search</button>
+
+        </div>
+
+        </form>
+        <div class="titel">
+            <p>report</p>
+            <i class=" fas fa-user-group"></i>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>user</th>
+                    <th>id</th>
+                    <th>entry point</th>
+                    <th>entry time </th>
+                    <th>exite time</th>
+                    <th>total time</th>
+                    <th>cost</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+            {% for data in combined_filtered_data %}
+                <tr>
+                    <td> <p class="user">{{data.User}}</p></td>
+                    <td><span class="id">{{data.code}}{{data.card}}</span></td>
+                    <td> <p class="entry-point">{{data.entry_point}}</p></td>
+                    <td><span class="entry-time">{{data.entry_time}}</span></td>
+                    <td><span class="exite-time">{{data.exite_time}}</span></td>
+                    <td><span class="total-time">{{data.total_time}}</span></td>
+                    <td><span class="cost"> {{data.cost}}{{data.packege.packege_cost}}</span></td>
+
+                </tr>
+                {% endfor %}
+            <td><span class="cost"> Total </span></td>
+            <td><span class="cost"> {{total_sum}} </span></td>
+            </tbody>
+        </table>
+        <div class="titel">
+            <p> subscribers tranactions report</p>
+            <i class=" fas fa-user-group"></i>
+        </div>
+        <form>
+            <div class="reportform">
+
+                <div>
+                    <div class="one">
+                        <label>From</label>
+                        {{form.start_date}}
+
+
+                        <label>To </label>
+                        {{form.end_date}}
+                        <label for="User" user>
+
+
+
+                        </label>
+
+                           {{form.user}}
+
+                    </div>
+                </div>
+
+                <button class="code-button"> Search</button>
+
+        </div>
+
+        </form>
+
+    </div>    
+</body>
+</html>

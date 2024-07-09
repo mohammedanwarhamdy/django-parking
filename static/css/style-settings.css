@@ -92,4 +92,133 @@ ul li a:hover,.dash{
     justify-content: space-between;
     letter-spacing: 2px;
     font-size: large;
+    flex-wrap: wrap;
+}
+
+.counting_settings_form{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    flex-wrap: wrap;
+}
+.period_duration{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+.period_cost{
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    margin: 8px;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+.period_duration label{
+    width: 200px;
+}
+.period_duration input{
+    width:60px ;
+    -webkit-text-fill-color:black;
+    border-radius: 3px;
+    flex-wrap: wrap;
+}
+.period_cost{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+.period_cost{
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    margin: 8px;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+.period_cost label{
+    width: 200px;
+    flex-wrap: wrap;
+}
+.period_cost input{
+    width:60px ;
+    -webkit-text-fill-color:black;
+    border-radius: 3px;
+    flex-wrap: wrap;
+}
+.code-button{
+    width: 70px;
+    height: 35px;
+    background-color:rgb(104, 6, 6);
+    font-size: 12px;
+    -webkit-text-fill-color:white;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+
+}
+.night_mode{
+    margin: 10px;
+    padding: 8px;
+    
+}
+.hidden{
+    display: none;
+   
+}
+ #additionalFields{
+    
+    flex-wrap: wrap;
+    margin: 10px;
+       gap: 30px;
+       align-items: center;
+}
+#additionalFields label{
+   
+    width: 130px;
+    flex-wrap: wrap;
+}
+#additionalFields input{
+    -webkit-text-fill-color:black;    
+    flex-basis: 150px;
+   flex-wrap: wrap;
+}
+.period_of_allowing{
+ display: flex;
+    width:295px;
+    gap: 30px;
+    justify-content: space-between;
+    margin: 8px;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+.period_of_allowing label{
+width: 200px;
+    flex-wrap: wrap;
+}
+.period_of_allowing input{
+    width:60px ;
+    -webkit-text-fill-color:black;
+    border-radius: 3px;
+    flex-wrap: wrap;
+}
+.add_user a{
+
+display:block;
+display:flex;
+    padding: 10px;
+    margin: 10px ;
+    border-radius: 8px;
+
+
+    text-decoration: none;
+    background-color: #66666655;
+    width:80px;
 }

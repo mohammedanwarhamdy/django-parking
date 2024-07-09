@@ -117,9 +117,7 @@ color:black;
 .card_id input{
     color: black;
 }
-.form input{
-    color= #001;
-}
+
 .form input {
             color: black ;
             }
@@ -127,6 +125,9 @@ color:black;
     color:black;
 }
 .packge select {
+color:black;
+}
+.package option{
 color:black;
 }
 .code-button{

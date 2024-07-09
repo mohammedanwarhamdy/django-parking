@@ -1,13 +1,17 @@
+import math
+from django.contrib.auth import login, authenticate
+from accounts .forms import SignUpForm
 from django.shortcuts import render,redirect
-from .models import devices,subscriber,transactions,counting
-from datetime import datetime, date
+from .models import devices,subscriber,transactions,counting,counting_settings
+from datetime import datetime, timedelta
+from datetime import datetime, timedelta
 from pyzkaccess import ZKAccess
-from .forms import edit_ipform,add_subscriber
+from .forms import edit_ipform,add_subscriber,FilterForm,counting_settings_form
 from django.contrib import messages
 import datetime
 from pyzkaccess.tables import User
-
-
+from django.db.models import Sum
+import math
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 
@@ -16,40 +20,42 @@ import accounts
 
 @login_required
 def all_devices(request):
-    global  ip_address
-    #its method to get ip wich entered in input ip to use it to connect conttroller
-    if request.method == "GET":
-        print(request)
-        ip_address = request.GET.get("ip_address")
-        device_name=request.GET.get("device_name")
+    if request.user.is_staff:
+        global  ip_address
+        #its method to get ip wich entered in input ip to use it to connect conttroller
+        if request.method == "GET":
+            print(request)
+            ip_address = request.GET.get("ip_address")
+            device_name=request.GET.get("device_name")
 
 
 
 
 
-        if ip_address:  # Check if ip_address is not None or empty
-            connstr = f'protocol=TCP,ipaddress={ip_address},port=4370,timeout=5000,passwd='
-            try:
-                #connect the controller and get ip and serial number
-                zk = ZKAccess(connstr=connstr)
-                print('Device SN:', zk.parameters.serial_number, 'IP:', zk.parameters.ip_address)
-                device_serialip=devices(serial=zk.parameters.serial_number,IP=zk.parameters.ip_address,Device_name=device_name)
-                #function get all serial number in database
-                all_serial=devices.objects.values_list("serial",flat=True)
-                #its condetion to not add the same controller twice
-                if zk.parameters.serial_number and zk.parameters.ip_address != None and  zk.parameters.serial_number not in all_serial:
-                    print(devices.serial)
-                    #add ip an serial numer to database
+            if ip_address:  # Check if ip_address is not None or empty
+                connstr = f'protocol=TCP,ipaddress={ip_address},port=4370,timeout=5000,passwd='
+                try:
+                    #connect the controller and get ip and serial number
+                    zk = ZKAccess(connstr=connstr)
+                    print('Device SN:', zk.parameters.serial_number, 'IP:', zk.parameters.ip_address)
+                    device_serialip=devices(serial=zk.parameters.serial_number,IP=zk.parameters.ip_address,Device_name=device_name)
+                    #function get all serial number in database
+                    all_serial=devices.objects.values_list("serial",flat=True)
+                    #its condetion to not add the same controller twice
+                    if zk.parameters.serial_number and zk.parameters.ip_address != None and  zk.parameters.serial_number not in all_serial:
+                        print(devices.serial)
+                        #add ip an serial numer to database
 
-                    device_serialip.save(force_insert=True)
-            except Exception as e:
-                print(e)
+                        device_serialip.save(force_insert=True)
+                except Exception as e:
+                    print(e)
 
-        #get all devices
-        all_devices = devices.objects.all()
-        context = {"all_devices": all_devices}
-        return render(request, "device.html", context)
-
+            #get all devices
+            all_devices = devices.objects.all()
+            context = {"all_devices": all_devices}
+            return render(request, "device.html", context)
+    else:
+        return redirect('/')
 def edit_ip(request,id):
 
 #get the seleced device id
@@ -100,6 +106,7 @@ def destroy(request,id):
 @login_required
 def all_subscriber(request):
     card=None
+    Name=None
     start_time=None
     end_time=None
     subscriberid=None
@@ -112,6 +119,7 @@ def all_subscriber(request):
                 # Save subscriber form data
 
                 # Extract card, start_time, and end_time from the form data
+                Name=str(form.cleaned_data.get("name"))
                 card = str(form.cleaned_data.get("card"))  # Convert card to string
                 start_time = form.cleaned_data.get("valid_from")  # Already a datetime.date object
                 end_time = form.cleaned_data.get("valid_to")  # Already a datetime.date object
@@ -135,7 +143,7 @@ def all_subscriber(request):
         print(e)
 
     all_subscribers=subscriber.objects.all()
-    context={"all_subscribers":all_subscribers,"form":form,"card":card,"start_time":start_time,"end_time":end_time,"packege":packege}
+    context={"all_subscribers":all_subscribers,"form":form,"card":card,"start_time":start_time,"end_time":end_time,"packege":packege,"subscriberid":subscriberid,"Name":Name}
     print(all_subscribers)
     return render(request,"subsciber.html",context)
 def delete_subscriber(request,id):
@@ -193,6 +201,7 @@ def edit_subscriber(request,id):
     return render(request,"subsciber.html",context)
 @login_required
 def all_transactions(request):
+
     all_transactions= transactions.objects.all().order_by('-id')[:5]
 
     context={"all_transactions":all_transactions}
@@ -201,47 +210,257 @@ def all_transactions(request):
 
 
 def Counting(request):
-    all_counting = counting.objects.all().order_by('-id')
-    context = {"counting": all_counting, "Entrytime": None, "Exitetime": None, "Total_time": None,
-               "Cost": None, "user": None}
-    if request.method=="GET":
-        Code=request.GET.get("code")
+    if request.user.is_staff:
+        all_counting = counting.objects.all().order_by('-id')
+    else:
+        all_counting = counting.objects.filter(User=request.user)
+
+    context = {
+        "counting": all_counting,
+        "Entrytime": None,
+        "Exitetime": None,
+        "Total_time": None,
+        "Cost": None,
+        "user": None
+    }
+
+    if request.method == "GET":
+        Code = request.GET.get("code")
         print(Code)
         try:
-            user=request.user
+            user = request.user
             data = transactions.objects.get(code=Code)
             Event_point = data.entry_point
             Entrytime = data.entry_time
-            Exitetime=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            Entry_time=datetime.strptime(str(Entrytime),'%Y-%m-%d %H:%M:%S')
-            Exite_time=datetime.strptime(str(Exitetime),'%Y-%m-%d %H:%M:%S')
-            diff=(Exite_time)-(Entry_time)
-            Total_time=diff.total_seconds() / 3600
-            Cost=Total_time*5
-            context['Entrytime']=Entrytime
-            context['Exitetime']=Exitetime
-            context['Total_time'] = Total_time
-            context['Cost'] = Cost
-            context['user'] = user
+            Exitetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            Entry_time = datetime.strptime(str(Entrytime), '%Y-%m-%d %H:%M:%S')
+            Exite_time = datetime.strptime(str(Exitetime), '%Y-%m-%d %H:%M:%S')
 
-            #adding houre price and function of approximate time here
-            existing_counting = counting.objects.filter(code=Code).first()
+            # Calculate total time in minutes
+            total_duration = (Exite_time - Entry_time).total_seconds() / 60  # convert to minutes
 
-            if existing_counting:
+            # Retrieve the counting settings
+            settings_instance = counting_settings.objects.first()
 
-               print ("availble")
-               messages.warning(request, 'Code already exists, updating existing record.')
+            if total_duration < settings_instance.period_of_allowing:
+                total_cost = 0
             else:
-                saving_counting_data=counting(User=user,exite_time=Exite_time,total_time=Total_time,cost=Cost,code=Code,entry_point=Event_point,entry_time=Entry_time)
-                saving_counting_data.save()
-                print("don")
-        except Exception as e:
-            print(e)
-        
+                total_cost = 0
+                remaining_duration = total_duration
+
+                # First Period Cost Calculation
+                if remaining_duration <= settings_instance.first_period_duration:
+                    total_cost += settings_instance.first_period_duration_cost
+                    remaining_duration = 0
+                else:
+                    total_cost += settings_instance.first_period_duration_cost
+                    remaining_duration -= settings_instance.first_period_duration
+
+                # Second Period Cost Calculation
+                if remaining_duration > 0:
+                    if remaining_duration <= settings_instance.second_period_duration:
+                        total_cost +=  settings_instance.second_period_duration_cost
+                        remaining_duration = 0
+                    else:
+                        total_cost += settings_instance.second_period_duration_cost
+                        remaining_duration -= settings_instance.second_period_duration
+
+                # Rest Period Cost Calculation
+                if remaining_duration > 0:
+                    total_cost += (
+                            math.ceil(remaining_duration / 60)) * settings_instance.rest_period_duration_cost_perhoure  # convert minutes to hours
+
+                # Night Mode Handling
+                if settings_instance.enable_night_mode:
+                    night_start = datetime.combine(Entry_time.date(), settings_instance.n_starttime)
+                    night_end = datetime.combine(Exite_time.date(), settings_instance.n_endtime)
+
+                    if night_start > night_end:
+                        night_end += timedelta(days=1)  # handle overnight night mode
+
+                    before_night_duration = max((night_start - Entry_time).total_seconds() / 60, 0)
+                    after_night_duration = max((Exite_time - night_end).total_seconds() / 60, 0)
+                    night_duration = max(total_duration - before_night_duration - after_night_duration, 0)
+                    if night_duration <settings_instance.min_period_tocost:
+                        settings_instance = counting_settings.objects.first()
+
+                        if total_duration < settings_instance.period_of_allowing:
+                            total_cost = 0
+                        else:
+                            total_cost = 0
+                            remaining_duration = total_duration
+
+                            # First Period Cost Calculation
+                            if remaining_duration <= settings_instance.first_period_duration:
+                                total_cost += settings_instance.first_period_duration_cost
+                                remaining_duration = 0
+                            else:
+                                total_cost += settings_instance.first_period_duration_cost
+                                remaining_duration -= settings_instance.first_period_duration
+
+                            # Second Period Cost Calculation
+                            if remaining_duration > 0:
+                                if remaining_duration <= settings_instance.second_period_duration:
+                                    total_cost += settings_instance.second_period_duration_cost
+                                    remaining_duration = 0
+                                else:
+                                    total_cost += settings_instance.second_period_duration_cost
+                                    remaining_duration -= settings_instance.second_period_duration
+
+                            # Rest Period Cost Calculation
+                            if remaining_duration > 0:
+                                total_cost += (
+                                                  math.ceil(
+                                                      remaining_duration / 60)) * settings_instance.rest_period_duration_cost_perhoure  # convert minutes to hours
+
+                    else:
+                        sum_of_befor_and_after=before_night_duration+after_night_duration
+                        total_duration=sum_of_befor_and_after
+                        if total_duration < settings_instance.period_of_allowing:
+                            total_cost = 0
+                        else:
+                            total_cost = 0
+                            remaining_duration = total_duration
+
+                            # First Period Cost Calculation
+                            if remaining_duration <= settings_instance.first_period_duration:
+                                total_cost += settings_instance.first_period_duration_cost
+                                remaining_duration = 0
+                            else:
+                                total_cost += settings_instance.first_period_duration_cost
+                                remaining_duration -= settings_instance.first_period_duration
+
+                            # Second Period Cost Calculation
+                            if remaining_duration > 0:
+                                if remaining_duration <= settings_instance.second_period_duration:
+                                    total_cost += settings_instance.second_period_duration_cost
+                                    remaining_duration = 0
+                                else:
+                                    total_cost += settings_instance.second_period_duration_cost
+                                    remaining_duration -= settings_instance.second_period_duration
+
+                            # Rest Period Cost Calculation
+                            if remaining_duration > 0:
+                                total_cost += (
+                                                  math.ceil(
+                                                      remaining_duration / 60)) * settings_instance.rest_period_duration_cost_perhoure
+
+                                total_cost += settings_instance.night_modeCost  # convert minutes to hours
+
+            context.update({
+                "Entrytime": Entrytime,
+                "Exitetime": Exitetime,
+                "Total_time": total_duration,
+                "Cost": total_cost,
+                "user": user
+            })
+
+        except transactions.DoesNotExist:
+            print(f"No transaction found with code {Code}")
+
+    return render(request, "counting.html", context)
+def reports(request):
+    if request.user.is_staff:
+        form = FilterForm(request.GET)
+        combined_filtered_data = counting.objects.none()
+        total_sum = None
+
+        if form.is_valid():
+            user = form.cleaned_data.get('user')
+            start_date = form.cleaned_data.get('start_date')
+            end_date = form.cleaned_data.get('end_date')
+
+            if user is None:
+                filtered_data = counting.objects.filter(creatrd_at__range=(start_date, end_date))
+                filtered_data_test = subscriber.objects.filter(creatrd_at__range=(start_date, end_date))
+            else:
+                filtered_data = counting.objects.filter(User_id=user, creatrd_at__range=(start_date, end_date))
+                filtered_data_test = subscriber.objects.filter(User_id=user, creatrd_at__range=(start_date, end_date))
+
+            # Aggregate total cost from counting and sum of packege_cost from subscriber's packages
+            counting_sum = filtered_data.aggregate(total=Sum("cost"))
+            subscriber_sum = filtered_data_test.aggregate(total=Sum("packege__packege_cost"))  # Sum packege_cost
+
+            # Calculate total sum if both are not None
+            if counting_sum['total'] is not None and subscriber_sum['total'] is not None:
+                total_sum = counting_sum['total'] + subscriber_sum['total']
+            elif counting_sum['total'] is not None:
+                total_sum = counting_sum['total']
+            elif subscriber_sum['total'] is not None:
+                total_sum = subscriber_sum['total']
+
+            combined_filtered_data = list(filtered_data) + list(filtered_data_test)
+            combined_filtered_data.sort(key=lambda x: x.creatrd_at)
+
+            context = {"form": form, "combined_filtered_data": combined_filtered_data, "total_sum": total_sum}
+            return render(request, "reports.html", context)
+
+    else:
+        form = FilterForm(request.GET)
+        combined_filtered_data = counting.objects.none()
+        total_sum = None
+
+        if form.is_valid():
+            user = request.user
+            start_date = form.cleaned_data.get('start_date')
+            end_date = form.cleaned_data.get('end_date')
+
+            filtered_data = counting.objects.filter(User=user, creatrd_at__range=(start_date, end_date))
+            filtered_data_test = subscriber.objects.filter(User=user, creatrd_at__range=(start_date, end_date))
+
+            # Aggregate total cost from counting and sum of packege_cost from subscriber's packages
+            counting_sum = filtered_data.aggregate(total=Sum("cost"))
+            subscriber_sum = filtered_data_test.aggregate(total=Sum("packege__packege_cost"))  # Sum packege_cost
+
+            # Calculate total sum if both are not None
+            if counting_sum['total'] is not None and subscriber_sum['total'] is not None:
+                total_sum = counting_sum['total'] + subscriber_sum['total']
+            elif counting_sum['total'] is not None:
+                total_sum = counting_sum['total']
+            elif subscriber_sum['total'] is not None:
+                total_sum = subscriber_sum['total']
+
+            combined_filtered_data = list(filtered_data) + list(filtered_data_test)
+            combined_filtered_data.sort(key=lambda x: x.creatrd_at)
+
+            context = {"form": form, "combined_filtered_data": combined_filtered_data, "total_sum": total_sum}
+            return render(request, "reports.html", context)
+
+        # If no valid form or other conditions met, return an empty context to render the form
+    context = {"form": form, "combined_filtered_data": combined_filtered_data}
+    return render(request, "reports.html", context)
 
 
 
+def Counting_settings(request):
+    if request.user.is_staff:
+        settings_instance, created = counting_settings.objects.get_or_create(pk=1)
 
-
-
-    return render(request,"counting.html",context)
+        # If the form is submitted (POST request), process the data
+        if request.method == 'POST':
+            form = counting_settings_form(request.POST, instance=settings_instance)
+            if form.is_valid():
+                form.save()
+                  # Replace with the URL to redirect after successful form submission
+        else:
+            # If it's a GET request, populate the form with existing data
+            form = counting_settings_form(instance=settings_instance)
+        context={'form': form}
+        return render(request,"settings.html",context)
+    else:
+        return redirect("/")
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.refresh_from_db()  # Load the profile instance created by the signal
+            user.email = form.cleaned_data.get('email')
+            user.save()
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=user.username, password=raw_password)
+            login(request, user)
+            return redirect('/')
+    else:
+        form = SignUpForm()
+    return render(request, 'signup.html', {'form': form})

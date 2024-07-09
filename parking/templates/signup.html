@@ -1,0 +1,94 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <title>Parking System</title>
+</head>
+<body>
+    <div class="menu">
+        <ul>
+            <li>
+                <a class="profile" href="">
+                    <div class="img-box">
+                        <img src="profile.jpg" alt="img">
+                    </div>
+                    <h2>{{user}}</h2>
+                </a>
+            </li>
+            <li>
+                <a class="dash" href="{% url 'parking:parking' %}">
+                    <i class="fas fa-home"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:counting' %}">
+                    <i class="fas fa-dollar"></i>
+                    <p>Counting</p>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:subscriber' %}">
+                    <i class="fas fa-user-group"></i>
+                    <p>Subscriptions</p>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:devices' %}">
+                    <i class="fas fa-computer"></i>
+                    <p>Devices</p>
+                </a>
+            </li>
+            <li>
+                <a href="printers.html">
+                    <i class="fas fa-table"></i>
+                    <p>Printers</p>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:reports' %}">
+                    <i class="fas fa-chart-bar"></i>
+                    <p>Reports</p>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'parking:settings' %}">
+                    <i class="fas fa-cog"></i>
+                    <p>Settings</p>
+                </a>
+            </li>
+            <li class="sign-out">
+                <a href="{% url 'logout' %}">
+                    <i class="fas fa-sign-out"></i>
+                    <p>Sign out</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="title">
+            <p>Wolves Parking System</p>
+            <i class="fas fa-chart-bar"></i>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form">
+                {{ form.as_p }}
+                <button class="code-button" type="submit">Sign Up</button>
+                {% if form.errors %}
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</body>
+</html>

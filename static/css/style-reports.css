@@ -93,3 +93,81 @@ ul li a:hover,.dash{
     letter-spacing: 2px;
     font-size: large;
 }
+
+.reportform{
+    margin: 10px;
+    flex-basis: 100%;
+     display: flex;
+     justify-content:space-between;
+     align-items: center;
+     flex-wrap: wrap;
+     gap: 50px;
+
+}
+.option1{
+    background-color:rgb(104, 6, 6);
+    border-radius: 5px;
+}
+
+.one{
+    flex-basis: 100%;
+     display: flex;
+     justify-content:space-between;
+     align-items: center;
+     flex-wrap: wrap;
+     gap: 50px;
+}
+
+.fromto{
+    background-color:rgb(104, 6, 6);
+    border-radius: 5px;
+}
+
+table{
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    border-spacing: 8px;
+}
+td,th{
+    background-color: #123;
+    height: 40px;
+    border-radius: 5px;
+}
+th {
+    background-color: rgb(65, 104, 209); ;
+}
+td:hover{
+    background-color:#66666655 ;
+}
+
+
+
+
+
+
+
+
+
+
+.code-button{
+    width: 70px;
+    height: 35px;
+    background-color:rgb(104, 6, 6);
+    font-size: 12px;
+    -webkit-text-fill-color:white;
+    border-radius: 8px;
+}
+.form input {
+            color: black ;
+
+            }
+.reportform select{
+color: black ;
+}
+.form input{
+color:black;
+}
+.one input{
+color:black ;
+}

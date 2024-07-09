@@ -53,13 +53,13 @@
             </a>
             </li>
             <li>
-                <a href="reports.html">
+                <a href="{% url 'parking:reports' %}">
                 <i class=" fas fa-chart-bar"></i>
                 <p>Reports</p>
             </a>
             </li>
             <li>
-                <a href="settings.html">
+                <a href="{% url 'parking:settings' %}">
                 <i class=" fas fa-cog"></i>
                 <p>Settings</p>
             </a>
@@ -117,12 +117,12 @@
                 <div class="text_area">
                     <textarea name="" id="" cols="30" rows="10">
     Wolves Parking Systems
-    Subscriber Id :
-    Name :
-    Card Id :
-    Valid From :
-    Valid To :
-    Packge :
+    Subscriber Id :{{subscriberid}}
+    Name :{{Name}}
+    Card Id :{{card}}
+    Valid From :{{start_time}}
+    Valid To :{{end_time}}
+    Packge :{{packege}}
                     </textarea>
                 </div>
             </form>
